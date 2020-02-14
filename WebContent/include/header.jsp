@@ -7,11 +7,30 @@
 				margin: 0 auto;
 			}
 			
-			h1 {
+			header {
+				position: relative;
+			}
+			
+			header h1 {
 				text-align: center;
 				color: #a81817;
 				font-size: 40px;
 				padding: 20px;
+			}
+			
+			header .login {
+				position: absolute;
+				bottom: 10px;
+				right: 50px;
+			}
+			
+			header a {
+				background-color: #fac57d;
+				border-radius: 5px;
+				color: #fff;
+				font-weight: bold;
+				padding: 5px 10px;
+				text-decoration: none;
 			}
 			
 			nav {
@@ -41,9 +60,27 @@
 			nav a:hover {
 				font-weight: bold;
 			}
+			
+			.login span {
+				padding-left: 20px;
+			}
+			
+			.login span b {
+				font-size: 18px;
+			}
 		</style>
 		<header>
 			<h1>대구 CGV</h1>		
+			<div class="login">
+				<%
+					String auth = (String) session.getAttribute("Auth");
+					if(auth != null){
+						out.println("<a href='movieLogOut.jsp'>로그아웃 </a> <span><b>"+auth+"</b>님 환영합니다.</span>");
+					} else {
+						out.println("<a href='movieLoginForm.jsp'>로그인</a>");
+					}
+				%>
+			</div>
 		</header>
 		<nav>
 			<ul>
