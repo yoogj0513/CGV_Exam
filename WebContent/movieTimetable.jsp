@@ -2,6 +2,7 @@
 <%@page import="cgvCalss.MovieInfo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="movieMgr" class="cgvCalss.MovieManager" scope="application"/>
 <!DOCTYPE html>
 <html>
@@ -53,14 +54,31 @@
 </style>
 </head>
 <body>
-	<%
+	<%-- <%
 		ArrayList<MovieInfo> list = movieMgr.getList();
-	%>
+	%> --%>
 	<jsp:include page="include/header.jsp" flush="false"/>
 	
 	<section class="timetable">
 		<h2>&lt; 상영 시간표 &gt;</h2>
-		<%
+		<c:choose>
+			<c:when test="${movieMgr.list.size() == 0 }">
+				<div class="movie_none">
+					<h1>상영영화가 없습니다.</h1>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<table>
+					<c:forEach var="list" items="${movieMgr.list }" varStatus="status">
+						<tr>
+							<th>${list.title }</th>
+							<td>${list.time }</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:otherwise>
+		</c:choose>
+		<%-- <%
 			if(list.size() == 0){
 				out.println("<div class='movie_none'><h1>상영영화가 없습니다.</h1></div>");
 			}
@@ -76,7 +94,7 @@
 					}
 				}
 			%>
-		</table>
+		</table> --%>
 	</section>
 	
 	<jsp:include page="include/footer.jsp" flush="false"/>

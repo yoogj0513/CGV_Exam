@@ -1,8 +1,11 @@
+<%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="cgvCalss.MovieBoardInfo"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <jsp:useBean id="mBoardMgr" class="cgvCalss.MovieBoardManager" scope="application"/>
 <!DOCTYPE html>
 <html>
@@ -95,15 +98,35 @@
 </script>
 </head>
 <body>
-	<%
+	<%-- <%
 		ArrayList<MovieBoardInfo> list = mBoardMgr.getList();
-	%>
+	%> --%>
 	<jsp:include page="include/header.jsp" flush="false"/>
 	
 	<section class="board_list">
 		<h1>게시판</h1>
 		<table>
-			<%
+			<c:choose>
+				<c:when test="${mBoardMgr.list.size() == 0 }">
+					<tr>
+						<th colspan="3">게시글이 없습니다.</th>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="list" items="${mBoardMgr.list }" varStatus="status">
+						<tr>
+							<td class="title">
+								<a href="movieBoardDetail.jsp?index=${status.index }">${list.title }</a>
+							</td>
+							<td class="writer">${list.name}</td>
+							<td class="time">
+								<fmt:formatDate value="${list.registerDate}" pattern="yyyy/MM/dd HH:mm"/>
+							</td>							
+						</tr>	
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			<%-- <%
 				if(list.size() == 0){
 					out.println("<tr>");
 					out.println("<th colspan='3'>게시글이 없습니다.</th>");
@@ -122,7 +145,7 @@
 						out.println("</tr>");
 					}
 				}
-			%>
+			%> --%>
 		</table>
 		<div class="btns">
 			<button id="Writing">글쓰기</button>

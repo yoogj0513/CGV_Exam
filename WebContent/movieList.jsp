@@ -2,6 +2,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:useBean id="movieMgr" class="cgvCalss.MovieManager" scope="application"/>
 <!DOCTYPE html>
 <html>
@@ -84,26 +85,25 @@
 </style>
 </head>
 <body>
-	<%
-		ArrayList<MovieInfo> list = movieMgr.getList();
-		//list.clear();
-		//list.remove(8);
-	%>
 	<jsp:include page="include/header.jsp" flush="false"/>
 	<section id="movieList">
-		<%
-			if(list.size() == 0){
-				out.println("<div class='list_none'><h1>상영영화가 없습니다.</h1></div>");
-			} else {
-				for(int i=0; i<list.size(); i++){
-					MovieInfo movie = list.get(i);
-					out.println("<div class='movie_list'><a href='movieDetail.jsp?index="+i+"'>");
-					out.println("<img src='image/"+ movie.getFile() +"' alt='"+ movie.getTitle() +"'>");
-					out.println("<p>"+ movie.getTitle() +"</p>");
-					out.println("</a></div>");
-				}
-			}
-		%>
+		<c:choose>
+			<c:when test="${movieMgr.list.size() == 0}">
+				<div class="list_none">
+					<h1>상영영화가 없습니다.</h1>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="list" items="${movieMgr.list }" varStatus="status">
+					<div class="movie_list">
+						<a href="movieDetail.jsp?index=${status.index }" >
+							<img src="image/${list.file }" alt="${list.title }" />
+							<p>${list.title }</p>
+						</a>
+					</div>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
 	</section>
 	<div class="addWrap">
 		<a href="movieForm.jsp">상영 영화 추가하기</a>
